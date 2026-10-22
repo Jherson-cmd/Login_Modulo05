@@ -1,0 +1,130 @@
+@model Login_Administracion_de_Modulos.Models.DashboardViewModel
+@{
+    var perfil = Model.PerfilRol;
+    var tabla = Model.TablaPrincipal;
+}
+
+<!-- Cabecera Dinámica del Rol -->
+<div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem;">
+    <div>
+        <div style="display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.25rem 0.75rem; border-radius: 999px; background: @(perfil.ColorPrimario)20; border: 1px solid @(perfil.ColorPrimario)55; color: @perfil.ColorPrimario; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem;">
+            <i class="ph-fill @perfil.IconoRol"></i>
+            <span>PANEL DINÁMICO • @perfil.NombreRol.ToUpperInvariant()</span>
+        </div>
+        <h1 style="font-size: 2rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.35rem 0;">
+            Bienvenido(a), @Model.UsuarioNombre
+        </h1>
+        <p style="color: var(--text-secondary); margin: 0; font-size: 0.92rem;">
+            Tablas vinculadas en <code>bd.sql</code>: <strong>@string.Join(", ", perfil.TablasRelacionadas)</strong>
+        </p>
+    </div>
+
+    <!-- Accesos Rápidos a Formularios Reciclados del Módulo 05 -->
+    <div style="display: flex; gap: 0.65rem; flex-wrap: wrap;">
+        @foreach (var op in perfil.OpcionesSidebar.Where(x => !string.IsNullOrEmpty(x.UrlModulo)).Take(3))
+        {
+            <button type="button"
+                    onclick="cargarModuloSpa('@op.UrlModulo')"
+                    style="background: linear-gradient(135deg, @perfil.ColorPrimario, @perfil.ColorSecundario); border: none; color: #fff; padding: 0.65rem 1.15rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.45rem; box-shadow: 0 4px 14px @(perfil.ColorPrimario)40;">
+                <i class="ph-bold @op.Icono"></i>
+                <span>@op.Titulo</span>
+            </button>
+        }
+    </div>
+</div>
+
+<!-- Tarjetas de Métricas en Tiempo Real (PostgreSQL) -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.15rem; margin-bottom: 2rem;">
+    @foreach (var m in Model.Metricas)
+    {
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 1.35rem 1.5rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 4px 18px rgba(0,0,0,0.2);">
+            <div style="width: 50px; height: 50px; border-radius: 12px; background: @(m.Color)20; color: @m.Color; display: flex; align-items: center; justify-content: center; font-size: 1.65rem; flex-shrink: 0;">
+                <i class="ph-fill @m.Icono"></i>
+            </div>
+            <div>
+                <p style="font-size: 0.74rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; margin: 0;">@m.Titulo</p>
+                <h3 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin: 0.15rem 0;">@m.Valor</h3>
+                <span style="font-size: 0.74rem; color: @m.Color; font-weight: 600;">@m.Subtitulo</span>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Tabla Dinámica con Buscador en Tiempo Real -->
+<div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.6rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+        <div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold @tabla.Icono" style="color: @perfil.ColorPrimario;"></i>
+                <span>@tabla.Titulo</span>
+            </h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">@tabla.Subtitulo</p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <input type="text"
+                   placeholder="🔍 Filtrar registros en tabla..."
+                   oninput="filtrarFilasTablaDinamica(this.value)"
+                   style="background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.55rem 0.95rem; border-radius: 8px; font-size: 0.85rem; width: 250px; outline: none;" />
+        </div>
+    </div>
+
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;" id="tablaDinamicaRol">
+            <thead>
+                <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-secondary); text-transform: uppercase; font-size: 0.76rem; letter-spacing: 0.5px;">
+                    @foreach (var col in tabla.Columnas)
+                    {
+                        <th style="padding: 0.8rem 0.9rem;">@col</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (tabla.Filas.Any())
+                {
+                    foreach (var fila in tabla.Filas)
+                    {
+                        <tr class="fila-dinamica-item" style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                            @for (int i = 0; i < fila.Count; i++)
+                            {
+                                string val = fila[i];
+                                if (i == 0)
+                                {
+                                    <td style="padding: 0.8rem 0.9rem; font-weight: 800; color: @perfil.ColorPrimario;">@val</td>
+                                }
+                                else if (val == "Activo" || val == "Activa" || val == "Disponible" || val == "Bueno")
+                                {
+                                    <td style="padding: 0.8rem 0.9rem;">
+                                        <span style="background: rgba(16,185,129,0.15); color: #34d399; padding: 0.22rem 0.6rem; border-radius: 6px; font-weight: 700; font-size: 0.78rem;">@val</span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="padding: 0.8rem 0.9rem; color: var(--text-primary);">@val</td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="@tabla.Columnas.Count" style="padding: 2rem; text-align: center; color: var(--text-secondary);">
+                            No hay registros disponibles en esta vista.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function filtrarFilasTablaDinamica(q) {
+        const term = (q || '').toLowerCase().trim();
+        document.querySelectorAll('#tablaDinamicaRol .fila-dinamica-item').forEach(tr => {
+            const txt = tr.textContent.toLowerCase();
+            tr.style.display = (!term || txt.includes(term)) ? '' : 'none';
+        });
+    }
+</script>

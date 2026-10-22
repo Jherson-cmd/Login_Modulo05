@@ -1,0 +1,33 @@
+name: Build & Deploy ASP.NET Core to FTP
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código fuente
+        uses: actions/checkout@v4
+
+      - name: Configurar .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restaurar dependencias NuGet (Npgsql)
+        run: dotnet restore Login_Modulo05/Login_Modulo05.csproj
+
+      - name: Compilar y Publicar Release
+        run: dotnet publish Login_Modulo05/Login_Modulo05.csproj -c Release -o ./publish
+
+      - name: Desplegar por FTP al Servidor de Hosting
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./publish/
+          server-dir: /site/wwwroot/

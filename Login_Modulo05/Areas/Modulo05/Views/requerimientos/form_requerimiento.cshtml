@@ -1,0 +1,100 @@
+@{
+    bool isPartial = Context.Request.Headers["X-Requested-With"] == "XMLHttpRequest" || Context.Request.Query["partial"] == "true";
+    Layout = isPartial ? null : "~/Vista/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Nuevo Requerimiento Institucional (Módulo 05)";
+}
+
+<div class="page-header" style="margin-bottom: 1.75rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 style="font-size: 2rem; font-weight: 800; background: linear-gradient(90deg, #00f2fe, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 0.4rem 0;">
+                Registro de Requerimiento y Solicitud de Servicio TI
+            </h1>
+            <p style="color: var(--text-secondary); margin: 0;">Módulo 05 — Solicite instalación de software, insumos, redes o equipamiento institucional (Tabla: <code>requerimientos</code>)</p>
+        </div>
+        <button type="button" onclick="cargarModuloSpa('/Modulo05/Requerimientos/Bandeja?partial=true')" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.7rem 1.2rem; border-radius: 10px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <i class="ph-bold ph-tray"></i> Ver Bandeja de Requerimientos
+        </button>
+    </div>
+</div>
+
+<div style="background: var(--bg-card, #111827); border: 1px solid var(--border-color, rgba(255,255,255,0.1)); border-radius: 16px; padding: 2rem; max-width: 960px;">
+    <form id="formRequerimientoMod05" onsubmit="event.preventDefault(); enviarRequerimientoMod05();">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem;">
+            <div>
+                <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.5rem;">Tipo de Servicio / Requerimiento *</label>
+                <select name="tipoServicio" required style="width: 100%; background: #080c16; border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 0.8rem 1rem; border-radius: 10px; font-size: 0.92rem;">
+                    <option value="Instalación de Software Académico">Instalación de Software Académico</option>
+                    <option value="Configuración de Red y Puntos de Acceso">Configuración de Red y Puntos de Acceso</option>
+                    <option value="Asignación de Proyector / Equipo Multimedia">Asignación de Proyector / Equipo Multimedia</option>
+                    <option value="Abastecimiento de Insumos / Tópico / Oficina">Abastecimiento de Insumos / Tópico / Oficina</option>
+                    <option value="Creación / Reseteo de Correo Institucional">Creación / Reseteo de Correo Institucional</option>
+                    <option value="Mantenimiento Preventivo de Laboratorio">Mantenimiento Preventivo de Laboratorio</option>
+                </select>
+            </div>
+
+            <div>
+                <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.5rem;">Ambiente o Área Destino *</label>
+                <select name="idAmbiente" style="width: 100%; background: #080c16; border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 0.8rem 1rem; border-radius: 10px; font-size: 0.92rem;">
+                    <option value="1">Laboratorio de Cómputo 01</option>
+                    <option value="2">Laboratorio de Redes y Conectividad</option>
+                    <option value="3">Aula 201 - Pabellón A</option>
+                </select>
+            </div>
+
+            <div>
+                <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.5rem;">Nivel de Prioridad *</label>
+                <select name="prioridad" required style="width: 100%; background: #080c16; border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 0.8rem 1rem; border-radius: 10px; font-size: 0.92rem;">
+                    <option value="Baja">Baja — Planificación Regular</option>
+                    <option value="Media" selected>Media — Atención Estándar</option>
+                    <option value="Alta">Alta — Requerido para Sesión Académica</option>
+                    <option value="Urgente">Urgente — Atención Inmediata</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.5rem;">Descripción y Justificación del Requerimiento *</label>
+            <textarea name="descripcion" rows="4" required placeholder="Especifique el detalle técnico, cantidad de equipos o software requerido..." style="width: 100%; background: #080c16; border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 0.85rem 1rem; border-radius: 10px; font-size: 0.92rem; resize: vertical;"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <span id="msgResultadoRequerimiento" style="font-weight: 700; font-size: 0.92rem;"></span>
+            <div style="display: flex; gap: 0.75rem;">
+                <button type="reset" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer;">
+                    Limpiar
+                </button>
+                <button type="submit" style="background: linear-gradient(135deg, #00f2fe, #0284c7); border: none; color: #050811; padding: 0.75rem 1.75rem; border-radius: 10px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="ph-bold ph-paper-plane-tilt"></i> Registrar Requerimiento
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function enviarRequerimientoMod05() {
+        const form = document.getElementById('formRequerimientoMod05');
+        const msg = document.getElementById('msgResultadoRequerimiento');
+        const fd = new FormData(form);
+        msg.style.color = '#38bdf8';
+        msg.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Guardando en PostgreSQL...';
+
+        fetch('/Modulo05/Requerimientos/Guardar', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    msg.style.color = '#10b981';
+                    msg.innerHTML = '<i class="ph-bold ph-check-circle"></i> ' + data.message;
+                    form.reset();
+                } else {
+                    msg.style.color = '#ef4444';
+                    msg.innerHTML = '<i class="ph-bold ph-warning"></i> ' + data.message;
+                }
+            })
+            .catch(err => {
+                msg.style.color = '#ef4444';
+                msg.textContent = 'Error de red: ' + err.message;
+            });
+    }
+</script>

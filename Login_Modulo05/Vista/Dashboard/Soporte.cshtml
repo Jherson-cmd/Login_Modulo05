@@ -1,0 +1,17 @@
+@model Login_Administracion_de_Modulos.Models.DashboardViewModel
+@{
+    Layout = "~/Vista/Shared/_DashboardLayout.cshtml";
+    var opcionInicial = Model.PerfilRol.OpcionesSidebar.FirstOrDefault(o => o.EsActivoPorDefecto)
+                     ?? Model.PerfilRol.OpcionesSidebar.FirstOrDefault();
+}
+
+@await Html.PartialAsync("~/Vista/Dashboard/_ContenidoDinamicoPartial.cshtml", Model)
+
+@if (opcionInicial != null && !string.IsNullOrEmpty(opcionInicial.UrlModulo))
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            cargarModuloSpa('@opcionInicial.UrlModulo');
+        });
+    </script>
+}

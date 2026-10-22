@@ -1,0 +1,102 @@
+@model List<Login_Administracion_de_Modulos.Areas.Modulo05.Models.RequerimientoItem>
+@{
+    bool isPartial = Context.Request.Headers["X-Requested-With"] == "XMLHttpRequest" || Context.Request.Query["partial"] == "true";
+    Layout = isPartial ? null : "~/Vista/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Bandeja de Requerimientos (Módulo 05)";
+}
+
+<div class="page-header" style="margin-bottom: 1.75rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 style="font-size: 2rem; font-weight: 800; background: linear-gradient(90deg, #10b981, #00f2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 0.4rem 0;">
+                Bandeja Central de Requerimientos y Servicios
+            </h1>
+            <p style="color: var(--text-secondary); margin: 0;">Seguimiento, aprobación y atención de requerimientos en PostgreSQL (Tabla: <code>requerimientos</code>)</p>
+        </div>
+        <button type="button" onclick="cargarModuloSpa('/Modulo05/Requerimientos/Create?partial=true')" style="background: linear-gradient(135deg, #10b981, #059669); border: none; color: #fff; padding: 0.75rem 1.3rem; border-radius: 10px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <i class="ph-bold ph-plus"></i> Nuevo Requerimiento
+        </button>
+    </div>
+</div>
+
+<div style="background: var(--bg-card, #111827); border: 1px solid var(--border-color, rgba(255,255,255,0.1)); border-radius: 16px; padding: 1.75rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="ph-bold ph-clipboard-text" style="color: #10b981;"></i> Solicitudes Registradas (@(Model?.Count ?? 0))
+        </h3>
+        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+            <button type="button" onclick="cargarModuloSpa('/Modulo05/Requerimientos/Bandeja?partial=true')" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 0.4rem 0.85rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer;">Todos</button>
+            <button type="button" onclick="cargarModuloSpa('/Modulo05/Requerimientos/Bandeja?estado=Pendiente&partial=true')" style="background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: #fbbf24; padding: 0.4rem 0.85rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer;">Pendientes</button>
+            <button type="button" onclick="cargarModuloSpa('/Modulo05/Requerimientos/Bandeja?estado=Aprobado&partial=true')" style="background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: #60a5fa; padding: 0.4rem 0.85rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer;">Aprobados</button>
+            <button type="button" onclick="cargarModuloSpa('/Modulo05/Requerimientos/Bandeja?estado=Atendido&partial=true')" style="background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #34d399; padding: 0.4rem 0.85rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer;">Atendidos</button>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
+                <thead>
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #94a3b8; text-transform: uppercase; font-size: 0.78rem;">
+                        <th style="padding: 0.75rem;">Folio</th>
+                        <th style="padding: 0.75rem;">Fecha</th>
+                        <th style="padding: 0.75rem;">Solicitante / Ambiente</th>
+                        <th style="padding: 0.75rem;">Servicio y Detalle</th>
+                        <th style="padding: 0.75rem;">Prioridad</th>
+                        <th style="padding: 0.75rem;">Estado</th>
+                        <th style="padding: 0.75rem; text-align: right;">Acciones Rápidas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model)
+                    {
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); color: #e2e8f0;">
+                            <td style="padding: 0.75rem; font-weight: 800; color: #00f2fe;">#REQ-@r.IdRequerimiento</td>
+                            <td style="padding: 0.75rem; white-space: nowrap;">@r.FechaSolicitud.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td style="padding: 0.75rem;">
+                                <div style="font-weight: 700; color: #fff;">@r.SolicitanteNombre</div>
+                                <small style="color: #94a3b8;">@r.AmbienteNombre</small>
+                            </td>
+                            <td style="padding: 0.75rem; max-width: 280px;">
+                                <div style="font-weight: 700; color: #f8fafc;">@r.TipoServicio</div>
+                                <small style="color: #94a3b8; display: block;">@r.Descripcion</small>
+                            </td>
+                            <td style="padding: 0.75rem;">
+                                <span style="background: rgba(245,158,11,0.15); color: #fbbf24; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 700; font-size: 0.8rem;">@r.Prioridad</span>
+                            </td>
+                            <td style="padding: 0.75rem;">
+                                <span style="background: rgba(16,185,129,0.15); color: #34d399; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 700; font-size: 0.8rem;">@r.Estado</span>
+                            </td>
+                            <td style="padding: 0.75rem; text-align: right; white-space: nowrap;">
+                                <button type="button" onclick="cambiarEstadoReq(@r.IdRequerimiento, 'Aprobado')" style="background: rgba(59,130,246,0.18); border: 1px solid rgba(59,130,246,0.35); color: #60a5fa; padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.78rem; font-weight: 700; cursor: pointer;">Aprobar</button>
+                                <button type="button" onclick="cambiarEstadoReq(@r.IdRequerimiento, 'Atendido')" style="background: rgba(16,185,129,0.18); border: 1px solid rgba(16,185,129,0.35); color: #34d399; padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.78rem; font-weight: 700; cursor: pointer;">Atender</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div style="text-align: center; padding: 2.5rem; color: #94a3b8;">
+            No se encontraron requerimientos con el filtro seleccionado.
+        </div>
+    }
+</div>
+
+<script>
+    function cambiarEstadoReq(id, estado) {
+        const fd = new FormData();
+        fd.append('idRequerimiento', id);
+        fd.append('estado', estado);
+        fd.append('observacion', 'Actualizado desde Bandeja de Control');
+        fetch('/Modulo05/Requerimientos/ActualizarEstado', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(d => {
+                if (d.success && typeof cargarModuloSpa === 'function') {
+                    cargarModuloSpa('/Modulo05/Requerimientos/Bandeja?partial=true');
+                }
+            });
+    }
+</script>

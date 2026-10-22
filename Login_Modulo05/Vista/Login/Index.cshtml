@@ -1,0 +1,820 @@
+@using Login_Administracion_de_Modulos.Seguridad
+@{
+    Layout = null;
+    ViewData["Title"] = "Iniciar Sesión - Intranet Institucional IESTP Argentina";
+    var roles = ViewBag.RolesDemo as IReadOnlyList<PerfilRolConfig> ?? ConfiguracionPanelesRol.ObtenerTodosLosRoles();
+    var rolesDestacados = roles.Where(r => r.EsDestacadoDemo).ToList();
+    var otrosRoles = roles.Where(r => !r.EsDestacadoDemo).ToList();
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://unpkg.com/@@phosphor-icons/web@2.1.1/src/index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --bg-right: #070b14;
+            --bg-card-demo: #0d1322;
+            --bg-input: #141c2e;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --cyan-accent: #00f2fe;
+            --cyan-btn: linear-gradient(90deg, #00f2fe 0%, #38bdf8 50%, #3b82f6 100%);
+        }
+
+        body.light-theme {
+            --bg-right: #f8fafc;
+            --bg-card-demo: #ffffff;
+            --bg-input: #f1f5f9;
+            --border-subtle: rgba(15, 23, 42, 0.12);
+            --text-main: #0f172a;
+            --text-muted: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-right);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        .login-split-wrapper {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* ================= COLUMNA IZQUIERDA (HERO) ================= */
+        .hero-left {
+            flex: 1.35;
+            position: relative;
+            background-image: url('/img/hero-login.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3.5rem 4rem;
+            overflow: hidden;
+        }
+
+        .hero-left::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(5, 9, 20, 0.88) 0%, rgba(7, 13, 28, 0.78) 55%, rgba(7, 11, 20, 0.96) 100%);
+            z-index: 1;
+        }
+
+        .hero-content-top,
+        .hero-content-bottom {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid rgba(0, 242, 254, 0.35);
+            color: #00f2fe;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2.6rem, 4.2vw, 4rem);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -1px;
+            color: #ffffff;
+            margin-bottom: 1.35rem;
+        }
+
+        .hero-title .cyan-highlight {
+            color: #00e5ff;
+            display: block;
+        }
+
+        .hero-description {
+            font-size: 1.08rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            max-width: 480px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3.5rem;
+            align-items: center;
+            padding-top: 2rem;
+        }
+
+        .stat-item h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.15rem;
+        }
+
+        .stat-item span {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        /* ================= COLUMNA DERECHA (PANEL LOGIN & DEMO) ================= */
+        .auth-right {
+            width: 480px;
+            max-width: 100%;
+            background-color: var(--bg-right);
+            border-left: 1px solid var(--border-subtle);
+            padding: 2rem 2.5rem 3rem 2.5rem;
+            overflow-y: auto;
+            max-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .theme-toggle-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 0.75rem;
+        }
+
+        .btn-theme-toggle {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 0.45rem 0.95rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            transition: all 0.2s;
+        }
+
+        .btn-theme-toggle:hover {
+            border-color: #00f2fe;
+        }
+
+        .brand-center {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-wrapper {
+            width: 112px;
+            height: 112px;
+            margin: 0 auto 1rem auto;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 32px rgba(0, 242, 254, 0.3);
+        }
+
+        .logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .intranet-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.35rem 0.95rem;
+            border-radius: 999px;
+            background: rgba(0, 242, 254, 0.08);
+            border: 1px solid rgba(0, 242, 254, 0.35);
+            color: #00e5ff;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            margin-bottom: 0.9rem;
+        }
+
+        .welcome-title {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.35rem;
+        }
+
+        .welcome-sub {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+        }
+
+        /* Botón Google Institucional */
+        .btn-google-sso {
+            width: 100%;
+            background: #ffffff;
+            color: #0f172a;
+            border: 1px solid #e2e8f0;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+            margin-bottom: 1.35rem;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .btn-google-sso:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.2);
+        }
+
+        .divider-line {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+
+        .divider-line::before,
+        .divider-line::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+
+        .form-group {
+            margin-bottom: 1.1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-muted);
+            margin-bottom: 0.45rem;
+        }
+
+        .input-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-box i.left-ico {
+            position: absolute;
+            left: 0.95rem;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 0.8rem 1rem 0.8rem 2.65rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #00f2fe;
+            box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);
+        }
+
+        .btn-submit-login {
+            width: 100%;
+            background: var(--cyan-btn);
+            color: #040814;
+            border: none;
+            padding: 0.85rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit-login:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(0, 242, 254, 0.45);
+        }
+
+        /* ================= SECCIÓN MODO DEMO LOCAL ================= */
+        .demo-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .demo-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.35rem;
+        }
+
+        .demo-header-title {
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-main);
+        }
+
+        .badge-sin-bd {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #10b981;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 0.15rem 0.55rem;
+            border-radius: 6px;
+        }
+
+        .demo-subtitle {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            margin-bottom: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .demo-filter-input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 0.55rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 0.85rem;
+            outline: none;
+        }
+
+        .demo-filter-input:focus {
+            border-color: #00f2fe;
+        }
+
+        .demo-featured-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .demo-card-large {
+            background: var(--bg-card-demo);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 0.85rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+        .demo-card-large:hover {
+            border-color: #00f2fe;
+            box-shadow: 0 0 16px rgba(0, 242, 254, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .demo-card-left {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .demo-icon-box {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .demo-card-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .demo-card-sub {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+        }
+
+        .demo-card-right {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .pill-probar {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #10b981;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 0.2rem 0.55rem;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .otros-paneles-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 0.65rem;
+        }
+
+        .demo-grid-compact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.55rem;
+        }
+
+        .demo-card-small {
+            background: var(--bg-card-demo);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 0.65rem 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.8rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .demo-card-small:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.15);
+        }
+
+        .demo-card-small-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 0;
+        }
+
+        .demo-card-small-left span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Alertas */
+        .login-alert {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .login-alert.error {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #f87171;
+        }
+
+        .login-alert.success {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #34d399;
+        }
+
+        /* Modal Google SSO Institucional */
+        .google-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 1rem;
+        }
+
+        .google-modal-backdrop.active {
+            display: flex;
+        }
+
+        .google-modal-box {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            max-width: 440px;
+            width: 100%;
+            padding: 1.75rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        @@media (max-width: 960px) {
+            .hero-left {
+                display: none;
+            }
+            .auth-right {
+                width: 100%;
+                max-width: 520px;
+                margin: 0 auto;
+                border-left: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-split-wrapper">
+        <!-- ================= IZQUIERDA: HERO INSTITUCIONAL ================= -->
+        <section class="hero-left">
+            <div class="hero-content-top">
+                <div class="hero-badge">
+                    <i class="ph-fill ph-shield-check"></i>
+                    <span>INTRANET INSTITUCIONAL</span>
+                </div>
+                <h1 class="hero-title">
+                    Tu carrera<br />
+                    tecnológica<br />
+                    <span class="cyan-highlight">empieza hoy.</span>
+                </h1>
+                <p class="hero-description">
+                    Accede a la Intranet Institucional y gestiona tus servicios académicos y administrativos.
+                </p>
+            </div>
+
+            <div class="hero-content-bottom">
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <h3>4</h3>
+                        <span>MÓDULOS ACTIVOS</span>
+                    </div>
+                    <div class="stat-item">
+                        <h3>100%</h3>
+                        <span>DIGITAL</span>
+                    </div>
+                    <div class="stat-item">
+                        <h3>24/7</h3>
+                        <span>DISPONIBLE</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= DERECHA: FORMULARIO LOGIN Y BOTONES DEMO ================= -->
+        <section class="auth-right">
+            <div class="theme-toggle-row">
+                <button type="button" class="btn-theme-toggle" onclick="alternarModoTema()" id="btnTema">
+                    <i class="ph-bold ph-sun" style="color: #00e5ff;"></i>
+                    <span id="txtTema">Modo Claro</span>
+                </button>
+            </div>
+
+            <div class="brand-center">
+                <div class="logo-wrapper">
+                    <img src="/img/logo.gif" onerror="this.src='/img/logo.png'" alt="Logo IESTP Argentina" />
+                </div>
+                <div class="intranet-pill">
+                    <i class="ph-bold ph-buildings"></i>
+                    <span>INTRANET INSTITUCIONAL</span>
+                </div>
+                <h2 class="welcome-title">¡Hola de nuevo!</h2>
+                <p class="welcome-sub">Inicia sesión para acceder a la Intranet Institucional.</p>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(ViewBag.Error as string))
+            {
+                <div class="login-alert error">
+                    <i class="ph-bold ph-warning-circle"></i>
+                    <span>@ViewBag.Error</span>
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(ViewBag.Mensaje as string))
+            {
+                <div class="login-alert success">
+                    <i class="ph-bold ph-check-circle"></i>
+                    <span>@ViewBag.Mensaje</span>
+                </div>
+            }
+
+            <!-- Botón Google Institucional -->
+            <button type="button" class="btn-google-sso" onclick="abrirModalGoogleSSO()">
+                <svg width="18" height="18" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                <span>Continuar con Google Institucional</span>
+            </button>
+
+            <div class="divider-line">O INICIA SESIÓN CON TU USUARIO</div>
+
+            <!-- Formulario Login PostgreSQL -->
+            <form method="post" action="/Login/Autenticar">
+                <div class="form-group">
+                    <label class="form-label" for="dni">DNI DEL ALUMNO / USUARIO</label>
+                    <div class="input-box">
+                        <i class="ph ph-identification-card left-ico"></i>
+                        <input type="text" id="dni" name="dni" class="form-input" placeholder="ej. 74296138" maxlength="12" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">CONTRASEÑA</label>
+                    <div class="input-box">
+                        <i class="ph ph-lock-key left-ico"></i>
+                        <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" value="123456" required />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit-login">
+                    <i class="ph-bold ph-sign-in"></i>
+                    <span>Ingresar a la Intranet</span>
+                </button>
+            </form>
+
+            <!-- ================= ACCESO RÁPIDO - MODO DEMO LOCAL ================= -->
+            <div class="demo-section">
+                <div class="demo-header-row">
+                    <span class="demo-header-title">ACCESO RÁPIDO - MODO DEMO LOCAL</span>
+                    <span class="badge-sin-bd">SIN BD</span>
+                </div>
+                <p class="demo-subtitle">
+                    Ingresa a los paneles con una sesión local de prueba sin necesidad de usuario ni contraseña:
+                </p>
+
+                <!-- Buscador / Filtro rápido de roles demo -->
+                <input type="text" id="filtroRolesDemo" class="demo-filter-input" placeholder="🔍 Filtrar rol o módulo (ej. Tópico, Psicología, Soporte, Jefe...)" oninput="filtrarBotonesDemo(this.value)" />
+
+                <!-- 4 Tarjetas Destacadas -->
+                <div class="demo-featured-list" id="listaDemoDestacados">
+                    @foreach (var rol in rolesDestacados)
+                    {
+                        <a href="/login-demo/@rol.Slug" class="demo-card-large demo-role-item" data-role-name="@rol.NombreRol @rol.Subtitulo">
+                            <div class="demo-card-left">
+                                <div class="demo-icon-box" style="color: @rol.ColorPrimario; border: 1px solid @(rol.ColorPrimario)40;">
+                                    <i class="ph-bold @rol.IconoRol"></i>
+                                </div>
+                                <div>
+                                    <div class="demo-card-title">@rol.NombreRol</div>
+                                    <div class="demo-card-sub">@rol.Subtitulo</div>
+                                </div>
+                            </div>
+                            <div class="demo-card-right">
+                                <span class="pill-probar">PROBAR</span>
+                                <i class="ph-bold ph-caret-right" style="color: var(--text-muted); font-size: 0.85rem;"></i>
+                            </div>
+                        </a>
+                    }
+                </div>
+
+                <!-- Otros Paneles (Demo) en grilla de 2 columnas -->
+                <div class="otros-paneles-label">OTROS PANELES (DEMO):</div>
+                <div class="demo-grid-compact" id="listaDemoOtros">
+                    @foreach (var rol in otrosRoles)
+                    {
+                        bool esJefe = rol.Slug.StartsWith("jefe") || rol.Slug.StartsWith("encargado");
+                        string borderStyle = esJefe ? $"border-color: {rol.ColorPrimario}88; color: {rol.ColorPrimario};" : "";
+                        string labelCorto = rol.NombreRol
+                            .Replace("Secretaría Académica", "Secretaría")
+                            .Replace("Jefe Taller ", "Jefe ")
+                            .Replace("Encargado de Inventario", "Encargado Inventario");
+
+                        <a href="/login-demo/@rol.Slug" class="demo-card-small demo-role-item" data-role-name="@rol.NombreRol @rol.Subtitulo" style="@borderStyle">
+                            <div class="demo-card-small-left">
+                                <i class="ph-bold @rol.IconoRol" style="color: @rol.ColorPrimario; font-size: 1rem;"></i>
+                                <span>@labelCorto</span>
+                            </div>
+                            <i class="ph-bold ph-caret-right" style="font-size: 0.78rem; opacity: 0.75;"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= MODAL GOOGLE SSO INSTITUCIONAL ================= -->
+    <div class="google-modal-backdrop" id="modalGoogleSSO">
+        <div class="google-modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <i class="ph-fill ph-google-logo" style="color: #38bdf8; font-size: 1.5rem;"></i>
+                    <h3 style="font-size: 1.1rem; font-weight: 800; color: #fff;">Google Workspace Institucional</h3>
+                </div>
+                <button type="button" onclick="cerrarModalGoogleSSO()" style="background: transparent; border: none; color: #94a3b8; font-size: 1.4rem; cursor: pointer;">&times;</button>
+            </div>
+            <p style="font-size: 0.84rem; color: #94a3b8; margin-bottom: 1rem; line-height: 1.5;">
+                Selecciona una cuenta institucional sincronizada en PostgreSQL (<code>@@istpargentina.edu.pe</code>) o ingresa tu correo institucional.
+                <br /><small style="color: #00e5ff;">API Key / ClientId listo en <code>appsettings.json</code>.</small>
+            </p>
+
+            <form method="post" action="/Login/GoogleInstitucional">
+                <label class="form-label">CUENTA GOOGLE REGISTRADA EN BD:</label>
+                <select name="correo" class="form-input" style="padding-left: 0.9rem; margin-bottom: 1rem;">
+                    <option value="jherson.ariasv@istpargentina.edu.pe">jherson.ariasv@istpargentina.edu.pe (Psicología / Admin)</option>
+                    <option value="paulo.carreons@istpargentina.edu.pe">paulo.carreons@istpargentina.edu.pe (Soporte / Psicología)</option>
+                    <option value="richard.yancced@istpargentina.edu.pe">richard.yancced@istpargentina.edu.pe (Docente / Psicología)</option>
+                    <option value="diana.contrerasl@istpargentina.edu.pe">diana.contrerasl@istpargentina.edu.pe (Secretaría)</option>
+                    <option value="rmgarcia@instituto.edu.pe">rmgarcia@instituto.edu.pe (Enfermería - Tópico)</option>
+                    <option value="jperez@instituto.edu.pe">jperez@instituto.edu.pe (Alumno - 74296138)</option>
+                </select>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.65rem;">
+                    <button type="button" onclick="cerrarModalGoogleSSO()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.65rem 1.1rem; border-radius: 8px; font-weight: 600; cursor: pointer;">Cancelar</button>
+                    <button type="submit" style="background: linear-gradient(90deg, #00f2fe, #3b82f6); border: none; color: #050811; padding: 0.65rem 1.3rem; border-radius: 8px; font-weight: 800; cursor: pointer;">
+                        Continuar con Google
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function alternarModoTema() {
+            document.body.classList.toggle('light-theme');
+            const esClaro = document.body.classList.contains('light-theme');
+            document.getElementById('txtTema').textContent = esClaro ? 'Modo Oscuro' : 'Modo Claro';
+        }
+
+        function abrirModalGoogleSSO() {
+            document.getElementById('modalGoogleSSO').classList.add('active');
+        }
+
+        function cerrarModalGoogleSSO() {
+            document.getElementById('modalGoogleSSO').classList.remove('active');
+        }
+
+        function filtrarBotonesDemo(q) {
+            const term = (q || '').toLowerCase().trim();
+            document.querySelectorAll('.demo-role-item').forEach(el => {
+                const txt = (el.getAttribute('data-role-name') || '').toLowerCase();
+                el.style.display = (!term || txt.includes(term)) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

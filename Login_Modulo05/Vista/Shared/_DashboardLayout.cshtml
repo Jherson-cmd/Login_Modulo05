@@ -1,0 +1,215 @@
+@using Microsoft.AspNetCore.Http
+@using Login_Administracion_de_Modulos.Models
+@using Login_Administracion_de_Modulos.Seguridad
+@{
+    var vm = ViewBag.DashboardModel as DashboardViewModel;
+    string rolIdentificador = vm?.PerfilRol.Slug
+        ?? Context.Session.GetString("UsuarioRolSlug")
+        ?? Context.Session.GetString("UsuarioRol")
+        ?? (ViewData["Role"] as string)
+        ?? "topico";
+
+    var perfil = vm?.PerfilRol ?? ConfiguracionPanelesRol.ObtenerPorRolOSlug(rolIdentificador);
+    var todosRoles = vm?.TodosLosRoles ?? ConfiguracionPanelesRol.ObtenerTodosLosRoles();
+    string usuarioNombre = vm?.UsuarioNombre ?? Context.Session.GetString("UsuarioNombre") ?? perfil.UsuarioDemoNombre;
+    string usuarioDni = vm?.UsuarioDni ?? Context.Session.GetString("UsuarioDni") ?? perfil.UsuarioDemoDni;
+    string iniciales = vm?.InicialesAvatar ?? "UI";
+    bool dbOnline = vm?.BaseDatosConectada ?? true;
+    var gruposSidebar = perfil.OpcionesSidebar.GroupBy(o => o.Seccion).ToList();
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] ?? $"Panel {perfil.NombreRol} - IESTP Argentina")</title>
+    <link rel="stylesheet" href="https://unpkg.com/@@phosphor-icons/web@2.1.1/src/index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+</head>
+<body>
+    <div class="dashboard-shell">
+        <!-- ================= PANEL LATERAL DINÁMICO (SIDEBAR POR ROL) ================= -->
+        <aside class="sidebar" id="sidebarDinamico">
+            <div class="sidebar-brand">
+                <img src="/img/logo.gif" onerror="this.src='/img/logo.png'" alt="Logo IESTP Argentina" />
+                <div class="sidebar-brand-info">
+                    <h2>IESTP ARGENTINA</h2>
+                    <span style="color: @perfil.ColorPrimario;">@perfil.NombreRol</span>
+                </div>
+            </div>
+
+            <!-- Buscador / Filtro rápido de opciones del panel lateral -->
+            <div class="sidebar-search-box">
+                <div style="position: relative;">
+                    <i class="ph ph-magnifying-glass" style="position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem;"></i>
+                    <input type="text" class="sidebar-search-input" placeholder="Filtrar opciones del menú..." oninput="filtrarMenuSidebar(this.value)" />
+                </div>
+            </div>
+
+            <!-- Menú Dinámico generado según el Rol Activo -->
+            <nav class="sidebar-nav" id="sidebarNavContainer">
+                @foreach (var grupo in gruposSidebar)
+                {
+                    <div class="nav-section-label">@grupo.Key</div>
+                    @foreach (var item in grupo)
+                    {
+                        string activeClass = item.EsActivoPorDefecto ? "active" : "";
+                        string onClickJs = !string.IsNullOrEmpty(item.UrlModulo)
+                            ? $"seleccionarOpcionSidebar(this); cargarModuloSpa('{item.UrlModulo}');"
+                            : $"seleccionarOpcionSidebar(this); cargarVistaInterna('{item.VistaInterna ?? "resumen_rol"}', '{perfil.Slug}');";
+
+                        <button type="button"
+                                class="nav-item sidebar-option-btn @activeClass"
+                                data-title="@item.Titulo @grupo.Key"
+                                data-url="@(item.UrlModulo ?? "")"
+                                data-vista="@(item.VistaInterna ?? "")"
+                                onclick="@onClickJs">
+                            <span class="nav-item-left">
+                                <i class="ph-bold @item.Icono"></i>
+                                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.Titulo</span>
+                            </span>
+                            @if (!string.IsNullOrEmpty(item.BadgeTexto))
+                            {
+                                <span class="nav-badge" style="background: @(item.BadgeColor ?? perfil.ColorPrimario);">@item.BadgeTexto</span>
+                            }
+                        </button>
+                    }
+                }
+            </nav>
+
+            <!-- Pie de Sesión del Sidebar -->
+            <div class="sidebar-footer">
+                <div class="sidebar-user-card">
+                    <div class="sidebar-avatar" style="background: linear-gradient(135deg, @perfil.ColorPrimario, @perfil.ColorSecundario);">
+                        @iniciales
+                    </div>
+                    <div class="sidebar-user-meta">
+                        <div class="sidebar-user-name" title="@usuarioNombre">@usuarioNombre</div>
+                        <div class="sidebar-user-role">DNI: @usuarioDni</div>
+                    </div>
+                </div>
+                <a href="/Login/CerrarSesion" title="Cerrar Sesión" style="width: 34px; height: 34px; border-radius: 8px; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.35); color: #ef4444; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                    <i class="ph-bold ph-sign-out"></i>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ================= CONTENEDOR PRINCIPAL ================= -->
+        <div class="dashboard-main">
+            <header class="dashboard-topbar">
+                <div class="topbar-left">
+                    <button type="button" onclick="document.getElementById('sidebarDinamico').classList.toggle('open')" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: #fff; width: 36px; height: 36px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;">
+                        <i class="ph-bold ph-list"></i>
+                    </button>
+                    <div>
+                        <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ph-fill @perfil.IconoRol" style="color: @perfil.ColorPrimario;"></i>
+                            <span>Panel: @perfil.NombreRol</span>
+                        </div>
+                        <div style="font-size: 0.74rem; color: var(--text-secondary);">@perfil.Subtitulo</div>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <!-- Indicador de estado PostgreSQL Supabase -->
+                    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.35); padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.76rem; font-weight: 700; color: #10b981; display: inline-flex; align-items: center; gap: 0.45rem;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+                        <span>PostgreSQL: @(dbOnline ? "Online (Supabase)" : "Modo Local")</span>
+                    </div>
+
+                    <!-- Conmutador / Filtro Rápido de Roles (Modo Demo) -->
+                    <div style="display: flex; align-items: center; gap: 0.45rem;">
+                        <span style="font-size: 0.74rem; color: var(--text-secondary); font-weight: 700;">CAMBIAR ROL (DEMO):</span>
+                        <select class="role-switcher-select" onchange="if(this.value) window.location.href='/login-demo/' + this.value;">
+                            @foreach (var r in todosRoles)
+                            {
+                                <option value="@r.Slug" selected="@(r.Slug == perfil.Slug)">@r.NombreRol</option>
+                            }
+                        </select>
+                    </div>
+
+                    <button type="button" onclick="document.body.classList.toggle('light-mode')" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.4rem 0.75rem; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer;">
+                        <i class="ph-bold ph-sun"></i> Tema
+                    </button>
+                </div>
+            </header>
+
+            <main class="dashboard-content" id="view-expediente-container">
+                <div id="spaMainContainer">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function seleccionarOpcionSidebar(btn) {
+            document.querySelectorAll('.sidebar-option-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+        }
+
+        function filtrarMenuSidebar(q) {
+            const term = (q || '').toLowerCase().trim();
+            document.querySelectorAll('.sidebar-option-btn').forEach(btn => {
+                const txt = (btn.getAttribute('data-title') || '').toLowerCase();
+                btn.style.display = (!term || txt.includes(term)) ? '' : 'none';
+            });
+        }
+
+        function ejecutarScriptsInyectados(container) {
+            const scripts = container.querySelectorAll('script');
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+        }
+
+        function cargarModuloSpa(url) {
+            const container = document.getElementById('spaMainContainer');
+            if (!container) {
+                window.location.href = url;
+                return;
+            }
+            container.innerHTML = `
+                <div style="padding: 4rem 1.5rem; text-align: center; color: var(--text-secondary);">
+                    <i class="ph ph-spinner ph-spin" style="font-size: 2.5rem; color: #00f2fe; margin-bottom: 0.85rem; display: block;"></i>
+                    <p style="font-weight: 600;">Cargando módulo desde PostgreSQL...</p>
+                </div>
+            `;
+
+            const targetUrl = url.includes('partial=') ? url : (url + (url.includes('?') ? '&partial=true' : '?partial=true'));
+            fetch(targetUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.text())
+                .then(html => {
+                    container.innerHTML = html;
+                    // Ocultar cabeceras duplicadas si el formulario tiene clinic-header-bar
+                    const dupHeader = container.querySelector('.clinic-header-bar');
+                    if (dupHeader) dupHeader.style.display = 'none';
+                    ejecutarScriptsInyectados(container);
+                })
+                .catch(err => {
+                    container.innerHTML = `<div style="padding: 2rem; color: #f87171;">Error al cargar el módulo: ${err.message}</div>`;
+                });
+        }
+
+        function cargarVistaInterna(vista, rolSlug) {
+            const url = `/Dashboard/VistaInterna?vista=${encodeURIComponent(vista)}&rol=${encodeURIComponent(rolSlug || '@perfil.Slug')}`;
+            cargarModuloSpa(url);
+        }
+
+        // Helpers globales para compatibilidad con enlaces de Modulo05
+        window.cargarSesionPsico = function () {
+            cargarModuloSpa('/Modulo05/Psicologia/FormSesion?partial=true');
+        };
+        window.cargarExpedientePsico = function () {
+            cargarModuloSpa('/Modulo05/Psicologia/ExpedienteAlumno?partial=true');
+        };
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
