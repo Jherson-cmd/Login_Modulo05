@@ -12,165 +12,165 @@ build_property.EntryPointFilePath =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Login_Modulo05
 build_property.RootNamespace = Login_Modulo05
-build_property.ProjectDir = C:\Users\Arias\Pictures\Login_Modulo05\Login_Modulo05\
+build_property.ProjectDir = c:\Users\Arias\Pictures\Login_Modulo05\Login_Modulo05\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 10.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\Arias\Pictures\Login_Modulo05\Login_Modulo05
+build_property.MSBuildProjectDirectory = c:\Users\Arias\Pictures\Login_Modulo05\Login_Modulo05
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/averias_docente/form_reporte.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/averias_docente/form_reporte.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3NcYXZlcmlhc19kb2NlbnRlXGZvcm1fcmVwb3J0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/averias_docente/mis_reportes.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/averias_docente/mis_reportes.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3NcYXZlcmlhc19kb2NlbnRlXG1pc19yZXBvcnRlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/enfermeria/form_atencion.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/enfermeria/form_atencion.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3NcZW5mZXJtZXJpYVxmb3JtX2F0ZW5jaW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/enfermeria/historial_paciente.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/enfermeria/historial_paciente.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3NcZW5mZXJtZXJpYVxoaXN0b3JpYWxfcGFjaWVudGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/enfermeria/panel_enfermeria.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/enfermeria/panel_enfermeria.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3NcZW5mZXJtZXJpYVxwYW5lbF9lbmZlcm1lcmlhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/psicologia/expediente_alumno.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/psicologia/expediente_alumno.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3NccHNpY29sb2dpYVxleHBlZGllbnRlX2FsdW1uby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/psicologia/form_sesion.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/psicologia/form_sesion.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3NccHNpY29sb2dpYVxmb3JtX3Nlc2lvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/psicologia/panel_psicologia.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/psicologia/panel_psicologia.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3NccHNpY29sb2dpYVxwYW5lbF9wc2ljb2xvZ2lhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/requerimientos/bandeja_requerimientos.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/requerimientos/bandeja_requerimientos.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3NccmVxdWVyaW1pZW50b3NcYmFuZGVqYV9yZXF1ZXJpbWllbnRvcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/requerimientos/form_requerimiento.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/requerimientos/form_requerimiento.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3NccmVxdWVyaW1pZW50b3NcZm9ybV9yZXF1ZXJpbWllbnRvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/soporte_tecnico/consola_principal.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/soporte_tecnico/consola_principal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3Ncc29wb3J0ZV90ZWNuaWNvXGNvbnNvbGFfcHJpbmNpcGFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/soporte_tecnico/form_atender_ticket.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/soporte_tecnico/form_atender_ticket.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3Ncc29wb3J0ZV90ZWNuaWNvXGZvcm1fYXRlbmRlcl90aWNrZXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/soporte_tecnico/historial_equipos.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Areas/Modulo05/Views/soporte_tecnico/historial_equipos.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW9kdWxvMDVcVmlld3Ncc29wb3J0ZV90ZWNuaWNvXGhpc3RvcmlhbF9lcXVpcG9zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/Error.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/Index.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/Privacy.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/_ViewImports.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/_ViewStart.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Administrador.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Administrador.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXEFkbWluaXN0cmFkb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Alumno.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Alumno.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXEFsdW1uby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Docente.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Docente.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXERvY2VudGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/EncargadoInventario.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/EncargadoInventario.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXEVuY2FyZ2Fkb0ludmVudGFyaW8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/JefeAdministracion.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/JefeAdministracion.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXEplZmVBZG1pbmlzdHJhY2lvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/JefeComputacion.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/JefeComputacion.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXEplZmVDb21wdXRhY2lvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/JefeContabilidad.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/JefeContabilidad.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXEplZmVDb250YWJpbGlkYWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/JefeGeneral.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/JefeGeneral.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXEplZmVHZW5lcmFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/PanelDinamico.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/PanelDinamico.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXFBhbmVsRGluYW1pY28uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Practicante.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Practicante.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXFByYWN0aWNhbnRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Psicologia.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Psicologia.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXFBzaWNvbG9naWEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Secretaria.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Secretaria.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXFNlY3JldGFyaWEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Soporte.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Soporte.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXFNvcG9ydGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Tesoreria.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Tesoreria.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXFRlc29yZXJpYS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Topico.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/Topico.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXFRvcGljby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/_ContenidoDinamicoPartial.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Dashboard/_ContenidoDinamicoPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcRGFzaGJvYXJkXF9Db250ZW5pZG9EaW5hbWljb1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Login/Index.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Login/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcTG9naW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Shared/_DashboardLayout.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Vista/Shared/_DashboardLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = VmlzdGFcU2hhcmVkXF9EYXNoYm9hcmRMYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/Shared/_Layout.cshtml]
+[c:/Users/Arias/Pictures/Login_Modulo05/Login_Modulo05/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-pfved8i5e6
